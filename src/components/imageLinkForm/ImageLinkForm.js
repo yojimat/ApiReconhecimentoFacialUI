@@ -5,7 +5,7 @@ const ImageLinkForm = ({ onInputChange, onPictureSubmit }) => {
 	return (
 		<div>
 			<p className='f3 white'>
-				{'Este cérebro mágico detecta rostos nas fotos! Faça um teste.'}
+				{'Este cérebro mágico detecta rostos nas fotos! Faça um teste.(Por enquanto so aceita links que tem na internet(Facebook,Insta, Etc...).'}
 			</p>
 			<div className='center'>
 				<div className='form center pa4 br3 shadow-5'>
