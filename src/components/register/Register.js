@@ -53,7 +53,7 @@ class Register extends React.Component {
 	        fieldValidationErrors.Password = passwordValid ? '' : ' Senha inválida.';
 	        break;
 	      case 'name':
-	        nameValid = value.length == 0;
+	        nameValid = value.length !== 0;
 	        fieldValidationErrors.Name = nameValid ? '' : ' Nome inválido.';
 	        break;
 	      default:
