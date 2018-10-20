@@ -183,7 +183,7 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(response => {
-      if (response) {
+      if (response.outputs.length) {
         fetch('https://frozen-caverns-42300.herokuapp.com/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
@@ -201,8 +201,6 @@ class App extends Component {
       this.displayFaceBox(this.calculateFaceLocation(response))
       })
       .catch(error => console.log(error));
-
-    console.log('click');
   }
 
   onRouteChange = (route) => {
@@ -245,9 +243,9 @@ class App extends Component {
                 onRouteChange={this.onRouteChange} 
                 loadUser={this.loadUser}
               /></div>
-            )
-          
+            )   
       }
+      <p className='i underline white pa3 ma3'>V.N.</p>
       </div>
     );
   }
