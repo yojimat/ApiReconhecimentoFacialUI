@@ -135,6 +135,7 @@ class App extends Component {
 
   loadUser = (data) => {
       this.setState(prevState => ({
+        ...prevState,
         usuario: {
             ...prevState.usuario,
             id: data.id,
@@ -203,7 +204,10 @@ class App extends Component {
   }
 
   displayFaceBox = (boxes = []) => {
-    this.setState({boxes: boxes});
+    this.setState(prevState =>({
+      ...prevState,
+      boxes: boxes
+    }));
   }
 
   onInputChange = (event) => {
@@ -212,8 +216,11 @@ class App extends Component {
  
   onPictureSubmit = () => {
     if (this.state.input !== this.state.imageUrl) {
-      this.setState({imageUrl: this.state.input});
-      this.setState({imageLinkAnterior: false});
+      this.setState(prevState =>({
+        ...prevState,
+        imageUrl: this.state.input,
+        imageLinkAnterior: false
+      }));
     }
 
     fetch('http://192.168.99.100:3000/imageurl'/*'https://frozen-caverns-42300.herokuapp.com/imageurl'*/, {
@@ -257,10 +264,16 @@ class App extends Component {
     if (route === 'signout') {
       return this.setState(initialState);
     } else if (route === 'home') {
-      this.setState({isSignedIn: true})
+      this.setState(prevState =>({
+        ...prevState,
+        isSignedIn: true
+        }))
     }
 
-    this.setState({route: route})
+    this.setState(prevState =>({
+      ...prevState,
+      route: route
+    }))
   }
 
   toggleModal = () => {
