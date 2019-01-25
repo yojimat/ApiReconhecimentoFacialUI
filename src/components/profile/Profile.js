@@ -77,7 +77,7 @@ class Profile extends Component {
 	}
 
 	render() {
-		const { usuario, onChangeImageProfile } = this.props;
+		const { usuario, onChangeImageProfile, errorImagePerfil, errorMsg} = this.props;
 
 		return (
 			<div className="profile-modal">
@@ -91,11 +91,13 @@ class Profile extends Component {
 								/>
 								<ImgFile 
 									onChangeImageProfile={onChangeImageProfile}
+									errorImagePerfil={errorImagePerfil}
+              						errorMsg={errorMsg}
 								/>
 							</div>
 							<h1>{this.state.usuario.nome}</h1>
 							<h4>Postagens: {usuario.postagens}</h4>
-							<p>Membro desde: {usuario.inscricao.substring(0, usuario.inscricao.indexOf('T'))}</p>
+							<p>Membro desde: {9/*usuario.inscricao.substring(0, usuario.inscricao.indexOf('T'))*/}</p>
 							<p>Idade: {usuario.idade}</p>
 							<p>Animal preferido: {usuario.pet}</p>
 							<hr />

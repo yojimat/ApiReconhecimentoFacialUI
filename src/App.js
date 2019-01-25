@@ -125,6 +125,8 @@ const initialState = {
     inscricao: new Date() 
   },
   imageLinkAnterior: false,
+  errorImagePerfil: false,
+  errorMsg: 0
 }
 
 class App extends Component {
@@ -299,11 +301,19 @@ class App extends Component {
 
     if (types.every(type => file[0].type !== type)) {
       console.log("erro de tipo");
-      return `'${file.type}' is not a supported format`
+      return this.setState(prevState => ({
+          ...prevState,
+          errorImagePerfil:true,
+          errorMsg: 0
+        })); 
     }
     if (file[0].size > 150000) {
       console.log("erro de tamanho");
-      return `'${file.name}' is too large, please pick a smaller file`
+      return this.setState(prevState => ({
+          ...prevState,
+          errorImagePerfil:true,
+          errorMsg: 1
+        }));
     }
     ////
     formData.append(0,file[0]);
@@ -324,15 +334,21 @@ class App extends Component {
     })
     .then(images => {
       this.setState(prevState => ({
+        ...prevState,
         usuario: {
           ...prevState.usuario,
-          imgSource: images[0].secure_url
-        }
+          imgSource: images[0].secure_url,
+        },
+        errorImagePerfil:false
       }))
     })
     .catch(err => {
       err.json().then(e => {
-        return "Erro ao postar a imagem. 😱"
+        return this.setState(prevState => ({
+          ...prevState,
+          errorImagePerfil:true,
+          errorMsg: 2
+        }));
       })
     })
   }
@@ -355,6 +371,8 @@ class App extends Component {
               usuario={this.state.usuario}
               loadUser={this.loadUser}
               onChangeImageProfile={this.onChangeImageProfile}
+              errorImagePerfil={this.state.errorImagePerfil}
+              errorMsg={this.state.errorMsg}
             />
           </Modal>
       }
