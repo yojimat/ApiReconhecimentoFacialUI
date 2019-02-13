@@ -1,22 +1,23 @@
 .profile-modal {
-	background-color: rgba(255, 255, 255, 0.8);
-	position: fixed;
-	height: 100%;
-	width: 100%;
-	top: 0;
-	left: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
 }
 
 .modal-close {
-	font-size: 3rem;
-	font-style: bold;
-	cursor: pointer;
+  font-size: 3rem;
+  font-style: bold;
+  cursor: pointer;
 }
 
 .modal-close:hover {
-	color: red;
-	cursor: pointer;
+  color: red;
+  cursor: pointer;
 }

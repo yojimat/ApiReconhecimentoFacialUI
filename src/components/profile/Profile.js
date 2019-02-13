@@ -65,8 +65,20 @@ class Profile extends Component {
       .then(resp => {
         if (resp.status === 200 || resp.status === 304) {
           this.validacaoIdade(resp.status);
-          this.props.toggleModal();
-          this.props.loadUser({ ...this.props.usuario, ...data });
+          fetch(`/profile/${this.props.usuario.id}`, {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: window.localStorage.getItem("token")
+            }
+          })
+            .then(resp => resp.json())
+            .then(user => {
+              if (user && user.email) {
+                this.props.loadUser(user);
+                this.props.toggleModal();
+              }
+            });
         } else if (resp.status === 400) {
           this.validacaoIdade(resp.status);
         }
@@ -110,9 +122,7 @@ class Profile extends Component {
             <h4>Postagens: {usuario.postagens}</h4>
             <p>
               Membro desde:{" "}
-              {
-                9 /*usuario.inscricao.substring(0, usuario.inscricao.indexOf('T'))*/
-              }
+              {usuario.inscricao.substring(0, usuario.inscricao.indexOf("T"))}
             </p>
             <p>Idade: {usuario.idade}</p>
             <p>Animal preferido: {usuario.pet}</p>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Spinner } from "reactstrap";
 import Navigation from "./components/navigation/Navigation";
 import Logo from "./components/logo/Logo";
 import ImageLinkForm from "./components/imageLinkForm/ImageLinkForm";
@@ -111,7 +112,7 @@ const initialState = {
   input: "",
   imageUrl: "",
   boxes: [],
-  route: "signin",
+  route: "home",
   isSignedIn: false,
   isProfileOpen: false,
   usuario: {
@@ -127,7 +128,10 @@ const initialState = {
   imageLinkAnterior: false,
   errorImagePerfil: false,
   errorMsg: 0,
-  isLoadingProfileImage: false
+  isLoadingProfileImage: false,
+  isLoadingHomePage: false,
+  isLoadingImageApi: false,
+  errorPostImagemApi: false
 };
 
 class App extends Component {
@@ -159,6 +163,11 @@ class App extends Component {
     const token = window.localStorage.getItem("token");
 
     if (token) {
+      this.setState(prevState => ({
+        ...prevState,
+        isLoadingHomePage: true
+      }));
+
       fetch("/signin", {
         method: "post",
         headers: {
@@ -229,6 +238,12 @@ class App extends Component {
       }));
     }
 
+    this.setState(prevState => ({
+      ...prevState,
+      isLoadingImageApi: true,
+      errorPostImagemApi: false
+    }));
+
     fetch("/imageurl", {
       method: "post",
       headers: {
@@ -264,7 +279,18 @@ class App extends Component {
         this.imageLinkAnteriorComponent();
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
-      .catch(error => console.log(error));
+      .catch(error =>
+        this.setState(prevState => ({
+          ...prevState,
+          errorPostImagemApi: true
+        }))
+      )
+      .finally(
+        this.setState(prevState => ({
+          ...prevState,
+          isLoadingImageApi: false
+        }))
+      );
   };
 
   onRouteChange = route => {
@@ -273,7 +299,8 @@ class App extends Component {
     } else if (route === "home") {
       this.setState(prevState => ({
         ...prevState,
-        isSignedIn: true
+        isSignedIn: true,
+        isLoadingHomePage: false
       }));
     }
 
@@ -318,7 +345,7 @@ class App extends Component {
         isLoadingProfileImage: false
       }));
     }
-    if (file[0].size > 150000) {
+    if (file[0].size > 15000000) {
       console.log("erro de tamanho");
       return this.setState(prevState => ({
         ...prevState,
@@ -407,15 +434,26 @@ class App extends Component {
             <FaceRecognition
               boxes={this.state.boxes}
               imageUrl={this.state.imageUrl}
+              isLoadingImageApi={this.state.isLoadingImageApi}
+              errorPostImagemApi={this.state.errorPostImagemApi}
             />
           </div>
         ) : this.state.route === "signin" ? (
-          <div>
-            <Signin
-              onRouteChange={this.onRouteChange}
-              loadUser={this.loadUser}
-            />
-          </div>
+          this.state.isLoadingHomePage === true ? (
+            <React.Fragment>
+              <h1 className="white">
+                Aguarde um momento, verificando sessão...
+              </h1>
+              <Spinner color="warning" />
+            </React.Fragment>
+          ) : (
+            <div>
+              <Signin
+                onRouteChange={this.onRouteChange}
+                loadUser={this.loadUser}
+              />
+            </div>
+          )
         ) : (
           <div>
             <Register
